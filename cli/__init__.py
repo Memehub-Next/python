@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, Optional
 
 import click
+from click import Command
 
 edge_cli_folder = os.path.dirname(__file__)
 cmd_prefix = "cmd_"
@@ -26,25 +27,18 @@ class MemehubClickMultiCommand(click.MultiCommand):
             raise ValueError("cannot have duplicate names")
         return filepaths
 
-    @staticmethod
-    def extract_name(filepath: str):
-        """
-        filename = cmd_prefix + click.group name
-        """
-        return Path(filepath).stem.replace(cmd_prefix, "")
-
     def list_commands(self, ctx: click.Context):
-        commands = [self.extract_name(filepath) for filepath in self.filepath_glob()]
+        commands = [Path(filepath).stem.replace(cmd_prefix, "") for filepath in self.filepath_glob()]
         commands.sort()
         return commands
 
-    def get_command(self, ctx: click.Context, name: str):
-        filepath = self.filepath_glob(name)[0]
+    def get_command(self, ctx: click.Context, cmd_name: str):
+        filepath = self.filepath_glob(cmd_name)[0]
         with open(filepath) as f:
             code = compile(f.read(), filepath, "exec")
-            ns: Dict[str, str] = {}
+            ns: Dict[str, Command | None] = {}
             eval(code, ns, ns)
-        return ns[name]
+        return ns[cmd_name]
 
 
 @click.command(cls=MemehubClickMultiCommand)

@@ -20,7 +20,7 @@ jobs:
         env:
           REGISTRY: memehub
           REPOSITORY: python
-          IMAGE_TAG: latest
+          IMAGE_TAG: dev
           DOPPLER_TOKEN: ${{ secrets.DEV_DOPPLER_TOKEN }}
         run: |
           docker build --build-arg DOPPLER_TOKEN=$DOPPLER_TOKEN -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f Dockerfile.prod .
@@ -28,6 +28,6 @@ jobs:
         env:
           REGISTRY: memehub
           REPOSITORY: python
-          IMAGE_TAG: latest
+          IMAGE_TAG: dev
         run: |
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG

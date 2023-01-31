@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  celery:
+    image: distortedlogic/python:${IMAGE_TAG}
+    build: .
+    container_name: celery
+    restart: on-failure
+    command: celery -A src.app.CELERY worker -B -l info
+    volumes:
+      - .:/app/
+  celery-monitor:
+    image: distortedlogic/flower:${IMAGE_TAG}
+    build:
+      context: .
+    container_name: flower-${IMAGE_TAG}
+    command: celery -A src.app.CELERY flower
+    restart: on-failure
+    volumes:
+      - .:/app/
+    ports:
+      - 5555:5555
+    logging:
+      driver: none
+    depends_on:
+      - celery

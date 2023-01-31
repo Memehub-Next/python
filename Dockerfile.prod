@@ -1,19 +1,12 @@
-FROM python:3.10.5-buster as builder
-WORKDIR /app
+FROM python:3.10.5-buster
 ENV PYTHONUNBUFFERED=1 
 ENV PYTHONDONTWRITEBYTECODE=1 
 ENV TERM=xterm 
 RUN apt-get update && apt-get install -qq -y \
-  apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg \
-  build-essential libpq-dev tesseract-ocr sqlite3 libsqlite3-dev python3-setuptools tree \
+  apt-transport-https ca-certificates curl gnupg \
+  build-essential libpq-dev sqlite3 libsqlite3-dev python3-setuptools tree \
   --no-install-recommends && rm -rf /var/lib/apt/lists/*
-RUN curl -sLf --retry 3 --tlsv1.2 --proto "=https" 'https://packages.doppler.com/public/cli/gpg.DE2A7741A397C129.key' | apt-key add - && \
-  echo "deb https://packages.doppler.com/public/cli/deb/debian any-version main" | tee /etc/apt/sources.list.d/doppler-cli.list && \
-  apt-get update && \
-  apt-get -y install doppler
-RUN pip install torch===1.10.0+cpu torchvision===0.11.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+WORKDIR /app/
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
-ADD start.flask.sh /
-RUN chmod +x /start.flask.sh

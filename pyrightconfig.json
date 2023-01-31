@@ -1,9 +1,9 @@
 {
-  "pythonVersion": "3.10",
+  "pythonVersion": "3.9",
   "pythonPlatform": "Linux",
-  "include": ["src", "cli", "config"],
+  "include": ["src", "cli"],
 
-  "exclude": ["**/node_modules", "**/__pycache__"],
+  "exclude": ["**/__pycache__"],
   "useLibraryCodeForTypes": true,
   "typeCheckingMode": "basic",
   "venvPath": "C:\\Users\\jerme\\anaconda3\\envs\\mh",

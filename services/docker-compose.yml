@@ -1,22 +1,22 @@
 version: "3.8"
 services:
-  trainingdata:
-    image: distortedlogic/trainingdata:edge
-    build:
-      context: ./trainingdata
-    container_name: trainingdata
-    shm_size: 4gb 
-    volumes:
-      - type: bind
-        source: ./trainingdata/backups
-        target: /backups
-      - type: bind
-        source: ./trainingdata/docker-volume
-        target: /var/lib/postgresql/data
-    env_file:
-      - ./.env
-    ports:
-    - 5433:5432
+  # trainingdata:
+  #   image: distortedlogic/trainingdata:edge
+  #   build:
+  #     context: ./trainingdata
+  #   container_name: trainingdata
+  #   shm_size: 4gb 
+  #   volumes:
+  #     - type: bind
+  #       source: ./trainingdata/backups
+  #       target: /backups
+  #     - type: bind
+  #       source: ./trainingdata/docker-volume
+  #       target: /var/lib/postgresql/data
+  #   env_file:
+  #     - ./.env
+  #   ports:
+  #   - 5433:5432
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -37,20 +37,20 @@ services:
       - 15672:15672
     # logging:
     #   driver: none
-  redisai:
-    image: distortedlogic/redisai:edge
-    container_name: redisai
-    build:
-      context: ./redis/redisai
-    entrypoint: "/usr/local/bin/redis-server"
-    command: "--include /usr/local/etc/redis/redis.conf --loadmodule /usr/lib/redis/modules/redisai.so"
-    volumes:
-      - type: bind
-        source: ./redis/redisai/redis.conf
-        target: /usr/local/etc/redis/redis.conf
-        read_only: true
-    ports:
-      - 6380:6379
+  # redisai:
+  #   image: distortedlogic/redisai:edge
+  #   container_name: redisai-${IMAGE_TAG}
+  #   build:
+  #     context: ./redis/redisai
+  #   entrypoint: "/usr/local/bin/redis-server"
+  #   command: "--include /usr/local/etc/redis/redis.conf --loadmodule /usr/lib/redis/modules/redisai.so"
+  #   volumes:
+  #     - type: bind
+  #       source: ./redis/redisai/redis.conf
+  #       target: /usr/local/etc/redis/redis.conf
+  #       read_only: true
+  #   ports:
+  #     - 6380:6379
   # elasticsearch:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
   #   container_name: elasticsearch

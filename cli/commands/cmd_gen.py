@@ -1,7 +1,8 @@
 import subprocess
 
 import click
-from src.lib.services.database import Database, DatabaseConfig
+
+from src.database import get_db_url
 
 
 @click.command()
@@ -13,8 +14,8 @@ def gen():
         name {[type]} -- filename without ext
     """
 
-    folder = "src/modules/generated/"
-    cmd1 = f"sqlacodegen --generator dataclasses --outfile {folder}site_dataclasses.py {DatabaseConfig.url(Database.SITE)}"
-    cmd2 = f"sqlacodegen --outfile {folder}site_tables.py {DatabaseConfig.url(Database.SITE)}"
+    folder = "src"
+    tables = "--tables reddit_memes"
+    cmd = f"sqlacodegen {tables} --outfile {folder}/site_tables.py {get_db_url()}"
 
-    return subprocess.call(cmd1+" && "+cmd2, shell=True)
+    return subprocess.call(cmd, shell=True)
